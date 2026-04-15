@@ -36,8 +36,8 @@ export default function HomePage() {
                 Serving DFW Since 2010
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-balance">
-                Medical Transport
-                <span className="text-primary block">You Can Trust</span>
+                Your Health Moves
+                <span className="text-primary block">With Us</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
                 Professional non-emergency medical transportation throughout Dallas-Fort Worth. Safe, comfortable, and always on time.
