@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Phone, MapPin, Clock, Truck, Users, Shield, ArrowRight, CheckCircle2 } from "lucide-react"
+import { Phone, MapPin, Clock, Truck, Users, Shield, ArrowRight, CheckCircle2, Mail } from "lucide-react"
 
 export default function HomePage() {
   return (
@@ -175,15 +175,15 @@ export default function HomePage() {
                     <p className="text-muted-foreground">(940) 500-7787</p>
                   </div>
                 </Link>
-                <div className="flex items-center gap-4 bg-card border border-border p-5 rounded-xl">
-                  <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
-                    <MapPin className="h-6 w-6 text-accent" />
+                <Link href="mailto:contact@graystonet.com" className="flex items-center gap-4 bg-card border border-border p-5 rounded-xl hover:border-primary/50 transition-all group">
+                  <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                    <Mail className="h-6 w-6 text-accent" />
                   </div>
                   <div>
-                    <p className="font-semibold">Location</p>
-                    <p className="text-muted-foreground">Dallas-Fort Worth, Texas</p>
+                    <p className="font-semibold">Email</p>
+                    <p className="text-muted-foreground">contact@graystonet.com</p>
                   </div>
-                </div>
+                </Link>
                 <div className="flex items-center gap-4 bg-card border border-border p-5 rounded-xl">
                   <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
                     <Clock className="h-6 w-6 text-primary" />
