@@ -202,10 +202,9 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#041e41] via-[#041e41]/80 to-[#041e41]/30" />
         <div className="max-w-6xl mx-auto px-6 relative">
           <div className="max-w-2xl text-center mx-auto lg:mx-0 lg:text-left">
-            <p className="text-accent font-medium mb-3 uppercase tracking-wider text-sm">Service Area</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Dallas-Fort Worth Coverage</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Serving the DFW Metroplex</h2>
             <p className="text-white/80">
-              Serving the entire DFW metroplex with reliable, on-time medical transportation.
+              Reliable, on-time medical transportation wherever you are in Dallas-Fort Worth.
             </p>
           </div>
         </div>
