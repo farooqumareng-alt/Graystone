@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import { Phone, MapPin, Clock, Truck, Users, Shield, ArrowRight, CheckCircle2, Mail, AlertTriangle, Calendar } from "lucide-react"
+import { Phone, Clock, Truck, Users, Shield, ArrowRight, CheckCircle2, Mail, AlertTriangle, Calendar } from "lucide-react"
 
 export default function HomePage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
@@ -181,27 +181,12 @@ export default function HomePage() {
       {/* Coverage Area */}
       <section id="coverage" className="py-20 bg-card border-y border-border">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-primary font-medium mb-3 uppercase tracking-wider text-sm">Service Area</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Dallas-Fort Worth Coverage</h2>
-              <p className="text-muted-foreground mb-8">
-                Serving the entire DFW metroplex with reliable, on-time medical transportation.
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                {["Dallas County", "Tarrant County", "Collin County", "Denton County", "Ellis County", "Rockwall County"].map((area) => (
-                  <div key={area} className="flex items-center gap-3 bg-secondary/50 p-3 rounded-lg">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-medium">{area}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 border border-border rounded-2xl p-10 text-center">
-              <div className="text-6xl font-bold text-primary mb-2">50+</div>
-              <p className="text-xl font-medium mb-2">Mile Service Radius</p>
-              <p className="text-muted-foreground">From the heart of DFW</p>
-            </div>
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-primary font-medium mb-3 uppercase tracking-wider text-sm">Service Area</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Dallas-Fort Worth Coverage</h2>
+            <p className="text-muted-foreground">
+              Serving the entire DFW metroplex with reliable, on-time medical transportation.
+            </p>
           </div>
         </div>
       </section>
@@ -241,7 +226,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="font-semibold">Hours</p>
-                    <p className="text-muted-foreground">Available 7 Days a Week</p>
+                    <p className="text-muted-foreground">Monday - Saturday, 6 AM - 6 PM</p>
                   </div>
                 </div>
               </div>
@@ -328,10 +313,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <Image src="/Logo.svg" alt="Gray Stone Transport" width={76} height={36} className="object-contain" />
-              <div>
-                <p className="font-semibold">Gray Stone Transport</p>
-                <p className="text-sm text-muted-foreground">Since 2010</p>
-              </div>
+              <p className="font-semibold">Gray Stone Transport</p>
             </div>
             <p className="text-sm text-muted-foreground">Professional NEMT Services in Dallas-Fort Worth, Texas</p>
           </div>
