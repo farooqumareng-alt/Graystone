@@ -9,7 +9,7 @@ export default function HomePage() {
       <nav className="fixed w-full top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Gray Stone Transport" width={48} height={48} className="rounded-full" />
+            <Image src="/Logo.svg" alt="Gray Stone Transport" width={90} height={42} className="object-contain" />
             <span className="text-lg font-semibold text-foreground hidden sm:block">Gray Stone Transport</span>
           </Link>
           <div className="flex items-center gap-6">
@@ -66,7 +66,7 @@ export default function HomePage() {
                 <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 to-accent/30 rounded-2xl blur-2xl opacity-50" />
                 <div className="relative bg-card border border-border rounded-2xl p-8">
                   <div className="flex items-center gap-4 mb-6 pb-6 border-b border-border">
-                    <Image src="/logo.png" alt="Gray Stone Transport" width={64} height={64} className="rounded-full" />
+                    <Image src="/Logo.svg" alt="Gray Stone Transport" width={120} height={56} className="object-contain" />
                     <div>
                       <h3 className="font-semibold text-lg">Gray Stone Transport</h3>
                       <p className="text-sm text-muted-foreground">NEMT Provider</p>
@@ -228,7 +228,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="Gray Stone Transport" width={40} height={40} className="rounded-full" />
+              <Image src="/Logo.svg" alt="Gray Stone Transport" width={76} height={36} className="object-contain" />
               <div>
                 <p className="font-semibold">Gray Stone Transport</p>
                 <p className="text-sm text-muted-foreground">Since 2010</p>

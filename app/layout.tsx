@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description: 'Comprehensive strategic overview for Gray Stone Transport NEMT services in DFW Texas',
   generator: 'v0.app',
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
+    icon: '/Logo.svg',
+    apple: '/Logo.svg',
   },
 }
 
