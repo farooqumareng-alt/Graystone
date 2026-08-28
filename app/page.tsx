@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import { Phone, Clock, Truck, Users, Shield, ArrowRight, CheckCircle2, Mail, AlertTriangle, Calendar } from "lucide-react"
+import { Phone, Clock, Truck, Users, Pill, ArrowRight, CheckCircle2, Mail, AlertTriangle, Calendar } from "lucide-react"
 
 export default function HomePage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
@@ -170,8 +170,8 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { icon: Truck, title: "Wheelchair Transport", desc: "ADA-compliant vehicles with secure wheelchair systems for safe travel.", color: "primary", image: "/accessible_transport_van_at_modern_entrance.png" },
-              { icon: Shield, title: "Stretcher Services", desc: "Medical-grade stretcher transport for patients who need to remain lying down.", color: "accent", image: "/accessible_transport_van_assistance.png" },
               { icon: Users, title: "Ambulatory Services", desc: "Door-to-door assistance for patients who can walk with minimal support.", color: "primary", image: "/assisted_arrival_at_graystone_transport.png" },
+              { icon: Pill, title: "Prescription Delivery", desc: "Convenient pickup and delivery of prescriptions and medical supplies right to your door.", color: "accent", image: "/pharmacy_delivery_handoff.png" },
             ].map((service) => (
               <div key={service.title} className="group bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all hover:-translate-y-1">
                 <div className="relative h-40">
@@ -301,8 +301,8 @@ export default function HomePage() {
                     <select name="service" required defaultValue="" className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground">
                       <option value="" disabled>Select a service</option>
                       <option>Wheelchair Transport</option>
-                      <option>Stretcher Service</option>
                       <option>Ambulatory Service</option>
+                      <option>Prescription Delivery</option>
                     </select>
                   </div>
                   <div>
