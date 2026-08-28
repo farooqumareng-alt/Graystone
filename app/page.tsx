@@ -1,32 +1,83 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
-import { Phone, MapPin, Clock, Truck, Users, Shield, ArrowRight, CheckCircle2, Mail } from "lucide-react"
+import { useState } from "react"
+import { Phone, MapPin, Clock, Truck, Users, Shield, ArrowRight, CheckCircle2, Mail, AlertTriangle, Calendar } from "lucide-react"
 
 export default function HomePage() {
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
+
+  async function handleBookingSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget
+    const data = new FormData(form)
+    const payload = {
+      name: data.get("name"),
+      phone: data.get("phone"),
+      pickup: data.get("pickup"),
+      dropoff: data.get("dropoff"),
+      date: data.get("date"),
+      time: data.get("time"),
+      service: data.get("service"),
+      notes: data.get("notes"),
+    }
+
+    setStatus("submitting")
+    try {
+      const res = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error("Request failed")
+      setStatus("success")
+      form.reset()
+    } catch {
+      setStatus("error")
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="fixed w-full top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/Logo.svg" alt="Gray Stone Transport" width={90} height={42} className="object-contain" />
-            <span className="text-lg font-semibold text-foreground hidden sm:block">Gray Stone Transport</span>
-          </Link>
-          <div className="flex items-center gap-6">
-            <Link href="#services" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium hidden md:block">Services</Link>
-            <Link href="#coverage" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium hidden md:block">Coverage</Link>
-            <Link href="#contact" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium hidden md:block">Contact</Link>
-            <Link href="tel:9405007787" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-medium hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2">
-              <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline">(940) 500-7787</span>
-              <span className="sm:hidden">Call</span>
+      {/* Header */}
+      <div className="fixed w-full top-0 z-50">
+        {/* Utility Bar */}
+        <div className="bg-foreground text-background">
+          <div className="max-w-6xl mx-auto px-6 py-2 flex items-center justify-between gap-4 text-xs sm:text-sm">
+            <Link href="tel:9405007787" className="flex items-center gap-2 font-medium hover:opacity-80 transition-opacity shrink-0">
+              <Phone className="h-3.5 w-3.5" />
+              (940) 500-7787
             </Link>
+            <p className="flex items-center gap-1.5 text-background/90 text-right">
+              <AlertTriangle className="h-3.5 w-3.5 text-red-400 shrink-0" />
+              <span>Medical emergency? Call <strong className="font-semibold">911</strong> immediately.</span>
+            </p>
           </div>
         </div>
-      </nav>
+        {/* Navigation */}
+        <nav className="bg-background/80 backdrop-blur-md border-b border-border">
+          <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-3">
+              <Image src="/Logo.svg" alt="Gray Stone Transport" width={90} height={42} className="object-contain" />
+              <span className="text-lg font-semibold text-foreground hidden sm:block">Gray Stone Transport</span>
+            </Link>
+            <div className="flex items-center gap-6">
+              <Link href="#services" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium hidden md:block">Services</Link>
+              <Link href="#coverage" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium hidden md:block">Coverage</Link>
+              <Link href="#booking" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium hidden md:block">Contact</Link>
+              <Link href="tel:9405007787" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-medium hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2">
+                <Phone className="h-4 w-4" />
+                <span className="hidden sm:inline">(940) 500-7787</span>
+                <span className="sm:hidden">Call</span>
+              </Link>
+            </div>
+          </div>
+        </nav>
+      </div>
 
       {/* Hero Section */}
-      <section className="pt-28 pb-20 relative overflow-hidden">
+      <section className="pt-36 sm:pt-32 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-background to-background" />
         <div className="max-w-6xl mx-auto px-6 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -43,8 +94,8 @@ export default function HomePage() {
                 Professional non-emergency medical transportation throughout Dallas-Fort Worth. Safe, comfortable, and always on time.
               </p>
               <div className="flex flex-wrap gap-4 mb-10">
-                <Link href="tel:9405007787" className="bg-primary text-primary-foreground px-6 py-3.5 rounded-lg font-semibold inline-flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 shadow-lg shadow-primary/25">
-                  <Phone className="h-5 w-5" />
+                <Link href="#booking" className="bg-primary text-primary-foreground px-6 py-3.5 rounded-lg font-semibold inline-flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 shadow-lg shadow-primary/25">
+                  <Calendar className="h-5 w-5" />
                   Book a Ride
                 </Link>
                 <Link href="#services" className="border border-border text-foreground px-6 py-3.5 rounded-lg font-semibold hover:bg-card hover:border-primary/50 transition-all inline-flex items-center gap-2">
@@ -195,29 +246,77 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="bg-card border border-border p-8 rounded-2xl">
-              <h3 className="text-xl font-semibold mb-6">Request a Ride</h3>
-              <form className="space-y-5">
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Name</label>
-                  <input type="text" className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Your Name" />
+            <div id="booking" className="bg-card border border-border p-8 rounded-2xl scroll-mt-36">
+              <h3 className="text-xl font-semibold mb-1">Book Your Ride</h3>
+              <p className="text-sm text-muted-foreground mb-6">Fill out the details below and our team will confirm your booking.</p>
+
+              {status === "success" ? (
+                <div className="text-center py-8">
+                  <div className="w-14 h-14 bg-primary/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle2 className="h-7 w-7 text-primary" />
+                  </div>
+                  <p className="font-semibold text-lg mb-2">Booking request sent!</p>
+                  <p className="text-muted-foreground mb-6">We&apos;ll call you shortly to confirm your ride details.</p>
+                  <button onClick={() => setStatus("idle")} className="text-primary font-medium hover:underline">
+                    Book another ride
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Phone</label>
-                  <input type="tel" className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="(XXX) XXX-XXXX" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Service Type</label>
-                  <select className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground">
-                    <option>Wheelchair Transport</option>
-                    <option>Stretcher Service</option>
-                    <option>Ambulatory Service</option>
-                  </select>
-                </div>
-                <button type="submit" className="w-full bg-primary text-primary-foreground py-3.5 rounded-lg font-semibold hover:bg-primary/90 transition-all hover:scale-[1.02] shadow-lg shadow-primary/25">
-                  Submit Request
-                </button>
-              </form>
+              ) : (
+                <form onSubmit={handleBookingSubmit} className="space-y-5">
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Full Name</label>
+                      <input name="name" type="text" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Your Name" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Phone</label>
+                      <input name="phone" type="tel" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="(XXX) XXX-XXXX" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Pickup Address</label>
+                    <input name="pickup" type="text" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Street, City, ZIP" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Drop-off Address</label>
+                    <input name="dropoff" type="text" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Street, City, ZIP" />
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Pickup Date</label>
+                      <input name="date" type="date" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Pickup Time</label>
+                      <input name="time" type="time" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Service Type</label>
+                    <select name="service" required defaultValue="" className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground">
+                      <option value="" disabled>Select a service</option>
+                      <option>Wheelchair Transport</option>
+                      <option>Stretcher Service</option>
+                      <option>Ambulatory Service</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Additional Notes <span className="text-muted-foreground/70">(optional)</span></label>
+                    <textarea name="notes" rows={3} className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground resize-none" placeholder="Mobility equipment, special instructions, etc." />
+                  </div>
+
+                  {status === "error" && (
+                    <p className="text-sm text-destructive">Something went wrong sending your request. Please call us at (940) 500-7787 instead.</p>
+                  )}
+
+                  <button type="submit" disabled={status === "submitting"} className="w-full bg-primary text-primary-foreground py-3.5 rounded-lg font-semibold hover:bg-primary/90 transition-all hover:scale-[1.02] shadow-lg shadow-primary/25 disabled:opacity-60 disabled:hover:scale-100">
+                    {status === "submitting" ? "Sending..." : "Book This Ride"}
+                  </button>
+                  <p className="text-xs text-muted-foreground text-center">
+                    Prefer to book by phone? Call <Link href="tel:9405007787" className="text-primary hover:underline">(940) 500-7787</Link>
+                  </p>
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -235,6 +334,14 @@ export default function HomePage() {
               </div>
             </div>
             <p className="text-sm text-muted-foreground">Professional NEMT Services in Dallas-Fort Worth, Texas</p>
+          </div>
+          <div className="mt-8 pt-6 border-t border-border text-center">
+            <p className="text-xs text-muted-foreground">
+              Powered by{" "}
+              <Link href="https://fixvise.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                FixVise.com
+              </Link>
+            </p>
           </div>
         </div>
       </footer>
