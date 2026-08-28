@@ -158,34 +158,33 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 border-t border-border relative overflow-hidden">
-        <Image
-          src="/accessible_transport_van_at_modern_entrance.png"
-          alt=""
-          fill
-          className="object-cover object-[75%_center]"
-        />
-        <div className="absolute inset-0 bg-[#041e41]/90" />
-        <div className="max-w-6xl mx-auto px-6 relative">
+      <section id="services" className="py-20 border-t border-border">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-accent font-medium mb-3 uppercase tracking-wider text-sm">What We Offer</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Our Services</h2>
-            <p className="text-white/80 max-w-2xl mx-auto">
+            <p className="text-primary font-medium mb-3 uppercase tracking-wider text-sm">What We Offer</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Comprehensive transportation solutions tailored to your medical needs
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: Truck, title: "Wheelchair Transport", desc: "ADA-compliant vehicles with secure wheelchair systems for safe travel.", color: "primary" },
-              { icon: Shield, title: "Stretcher Services", desc: "Medical-grade stretcher transport for patients who need to remain lying down.", color: "accent" },
-              { icon: Users, title: "Ambulatory Services", desc: "Door-to-door assistance for patients who can walk with minimal support.", color: "primary" },
+              { icon: Truck, title: "Wheelchair Transport", desc: "ADA-compliant vehicles with secure wheelchair systems for safe travel.", color: "primary", image: "/accessible_transport_van_at_modern_entrance.png" },
+              { icon: Shield, title: "Stretcher Services", desc: "Medical-grade stretcher transport for patients who need to remain lying down.", color: "accent", image: "/accessible_transport_van_assistance.png" },
+              { icon: Users, title: "Ambulatory Services", desc: "Door-to-door assistance for patients who can walk with minimal support.", color: "primary", image: "/assisted_arrival_at_graystone_transport.png" },
             ].map((service) => (
-              <div key={service.title} className="group bg-card border border-border rounded-xl p-8 hover:border-primary/50 transition-all hover:-translate-y-1">
-                <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${service.color === "accent" ? "bg-accent/20" : "bg-primary/20"}`}>
-                  <service.icon className={`h-7 w-7 ${service.color === "accent" ? "text-accent" : "text-primary"}`} />
+              <div key={service.title} className="group bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all hover:-translate-y-1">
+                <div className="relative h-40">
+                  <Image src={service.image} alt="" fill className="object-cover object-[70%_center]" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#041e41]/10 via-card/60 to-card" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{service.desc}</p>
+                <div className="p-8 pt-0">
+                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 -mt-7 relative ring-4 ring-card ${service.color === "accent" ? "bg-accent/20" : "bg-primary/20"}`}>
+                    <service.icon className={`h-7 w-7 ${service.color === "accent" ? "text-accent" : "text-primary"}`} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{service.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -193,12 +192,19 @@ export default function HomePage() {
       </section>
 
       {/* Coverage Area */}
-      <section id="coverage" className="py-20 bg-card border-y border-border">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <p className="text-primary font-medium mb-3 uppercase tracking-wider text-sm">Service Area</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Dallas-Fort Worth Coverage</h2>
-            <p className="text-muted-foreground">
+      <section id="coverage" className="py-24 border-y border-border relative overflow-hidden">
+        <Image
+          src="/accessible_transport_assistance.png"
+          alt=""
+          fill
+          className="object-cover object-[80%_center]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#041e41] via-[#041e41]/80 to-[#041e41]/30" />
+        <div className="max-w-6xl mx-auto px-6 relative">
+          <div className="max-w-2xl text-center mx-auto lg:mx-0 lg:text-left">
+            <p className="text-accent font-medium mb-3 uppercase tracking-wider text-sm">Service Area</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Dallas-Fort Worth Coverage</h2>
+            <p className="text-white/80">
               Serving the entire DFW metroplex with reliable, on-time medical transportation.
             </p>
           </div>
