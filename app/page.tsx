@@ -78,19 +78,26 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="pt-36 sm:pt-32 pb-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-background to-background" />
+        <Image
+          src="/assisted_arrival_at_graystone_transport.png"
+          alt=""
+          fill
+          priority
+          className="object-cover object-[85%_center]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#041e41] via-[#041e41]/85 to-[#041e41]/50" />
         <div className="max-w-6xl mx-auto px-6 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/25 text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                 Serving DFW Since 2010
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-balance">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-balance text-white">
                 Your Health Moves
-                <span className="text-primary block">With Us</span>
+                <span className="text-accent block">With Us</span>
               </h1>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg">
+              <p className="text-lg text-white/80 mb-8 leading-relaxed max-w-lg">
                 Professional non-emergency medical transportation throughout Dallas-Fort Worth. Safe, comfortable, and always on time.
               </p>
               <div className="flex flex-wrap gap-4 mb-10">
@@ -98,15 +105,15 @@ export default function HomePage() {
                   <Calendar className="h-5 w-5" />
                   Book a Ride
                 </Link>
-                <Link href="#services" className="border border-border text-foreground px-6 py-3.5 rounded-lg font-semibold hover:bg-card hover:border-primary/50 transition-all inline-flex items-center gap-2">
+                <Link href="#services" className="border border-white/30 text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-white/10 hover:border-white/50 transition-all inline-flex items-center gap-2">
                   View Services
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
               <div className="flex flex-wrap gap-6">
                 {["Wheelchair Accessible", "Certified Drivers", "24/7 Available"].map((item) => (
-                  <div key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                  <div key={item} className="flex items-center gap-2 text-sm text-white/80">
+                    <CheckCircle2 className="h-4 w-4 text-accent" />
                     {item}
                   </div>
                 ))}
@@ -151,12 +158,19 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 border-t border-border">
-        <div className="max-w-6xl mx-auto px-6">
+      <section id="services" className="py-20 border-t border-border relative overflow-hidden">
+        <Image
+          src="/accessible_transport_van_at_modern_entrance.png"
+          alt=""
+          fill
+          className="object-cover object-[75%_center]"
+        />
+        <div className="absolute inset-0 bg-[#041e41]/90" />
+        <div className="max-w-6xl mx-auto px-6 relative">
           <div className="text-center mb-14">
-            <p className="text-primary font-medium mb-3 uppercase tracking-wider text-sm">What We Offer</p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-accent font-medium mb-3 uppercase tracking-wider text-sm">What We Offer</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Our Services</h2>
+            <p className="text-white/80 max-w-2xl mx-auto">
               Comprehensive transportation solutions tailored to your medical needs
             </p>
           </div>
