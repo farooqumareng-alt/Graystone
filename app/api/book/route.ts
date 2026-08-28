@@ -30,23 +30,12 @@ export async function POST(request: Request) {
       ["Additional Notes", notes || "—"],
     ]
 
-    const html = `
-      <h2>New Ride Booking Request</h2>
-      <table cellpadding="6" style="border-collapse:collapse">
-        ${rows
-          .map(
-            ([label, value]) =>
-              `<tr><td style="font-weight:600;border:1px solid #ddd">${label}</td><td style="border:1px solid #ddd">${escapeHtml(String(value))}</td></tr>`
-          )
-          .join("")}
-      </table>
-    `
+    const html = renderBookingEmail(name, phone, rows)
 
     const { error } = await resend.emails.send({
       from: "Gray Stone Transport <onboarding@resend.dev>",
       to: notifyEmail,
-      replyTo: undefined,
-      subject: `Ride Booking Request - ${name}`,
+      subject: `New Ride Request - ${name}`,
       html,
     })
 
@@ -69,4 +58,82 @@ function escapeHtml(value: string) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;")
+}
+
+const SITE_URL = "https://www.graystonet.com"
+const NAVY = "#041e41"
+const BLUE = "#003e99"
+const LIGHT_BLUE = "#769ac9"
+
+function renderBookingEmail(name: string, phone: string, rows: [string, unknown][]) {
+  const rowsHtml = rows
+    .map(
+      ([label, value], i) => `
+        <tr>
+          <td style="padding:12px 0;border-bottom:${i === rows.length - 1 ? "none" : "1px solid #e5e7eb"};font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:${NAVY};vertical-align:top;width:160px;">${escapeHtml(label)}</td>
+          <td style="padding:12px 0;border-bottom:${i === rows.length - 1 ? "none" : "1px solid #e5e7eb"};font:400 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#374151;vertical-align:top;">${escapeHtml(String(value))}</td>
+        </tr>`
+    )
+    .join("")
+
+  return `
+<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background-color:#f3f4f6;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;">
+            <tr>
+              <td align="center" style="padding:32px 40px 20px;">
+                <img src="${SITE_URL}/email-logo.png" width="170" alt="Gray Stone Transport" style="display:block;max-width:170px;height:auto;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="height:4px;background-color:${BLUE};line-height:4px;font-size:0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="padding:32px 40px 8px;">
+                <h1 style="margin:0 0 4px;font:700 20px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:${NAVY};">New Ride Booking Request</h1>
+                <p style="margin:0;font:400 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#6b7280;">A new ride has been requested through the website. Details below.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 40px 8px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  ${rowsHtml}
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 40px 32px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#eef2f8;border-radius:8px;">
+                  <tr>
+                    <td style="padding:16px 20px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:${NAVY};">
+                      Next step: call or text ${escapeHtml(name)} at
+                      <a href="tel:${escapeHtml(phone.replace(/[^0-9+]/g, ""))}" style="color:${BLUE};text-decoration:none;">${escapeHtml(phone)}</a>
+                      to confirm the booking.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color:${NAVY};padding:28px 40px;">
+                <p style="margin:0 0 4px;font:700 15px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#ffffff;">Gray Stone Transport</p>
+                <p style="margin:0 0 12px;font:400 13px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:rgba(255,255,255,0.65);">Professional NEMT Services in Dallas-Fort Worth, Texas</p>
+                <p style="margin:0;font:400 13px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:${LIGHT_BLUE};">
+                  <a href="tel:9405007787" style="color:${LIGHT_BLUE};text-decoration:none;">(940) 500-7787</a>
+                  &nbsp;&middot;&nbsp;
+                  <a href="${SITE_URL}" style="color:${LIGHT_BLUE};text-decoration:none;">graystonet.com</a>
+                </p>
+                <p style="margin:16px 0 0;font:400 11px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:rgba(255,255,255,0.4);">This is an automated notification sent from your website's booking form.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
 }
