@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { createClient } from "@supabase/supabase-js"
 
 export async function POST(request: Request) {
   try {
@@ -8,16 +9,6 @@ export async function POST(request: Request) {
     if (!name || !phone || !pickup || !dropoff || !date || !time || !service) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 })
     }
-
-    const apiKey = process.env.RESEND_API_KEY
-    const notifyEmail = process.env.BOOKING_NOTIFY_EMAIL
-
-    if (!apiKey || !notifyEmail) {
-      console.error("Booking email not sent: RESEND_API_KEY or BOOKING_NOTIFY_EMAIL is not configured.")
-      return NextResponse.json({ error: "Booking is temporarily unavailable. Please call us instead." }, { status: 500 })
-    }
-
-    const resend = new Resend(apiKey)
 
     const rows = [
       ["Name", name],
@@ -30,17 +21,59 @@ export async function POST(request: Request) {
       ["Additional Notes", notes || "—"],
     ]
 
-    const html = renderBookingEmail(name, phone, rows)
+    // Persist to Supabase (best-effort -- a booking should still reach
+    // the business by email even if the database write fails).
+    let savedToDatabase = false
+    const supabaseUrl = process.env.SUPABASE_URL
+    const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY
+    if (supabaseUrl && supabaseSecretKey) {
+      try {
+        const supabase = createClient(supabaseUrl, supabaseSecretKey)
+        const { error: dbError } = await supabase.from("bookings").insert({
+          name,
+          phone,
+          pickup,
+          dropoff,
+          preferred_date: date,
+          preferred_time: time,
+          service,
+          notes: notes || null,
+        })
+        if (dbError) {
+          console.error("Supabase insert error:", dbError)
+        } else {
+          savedToDatabase = true
+        }
+      } catch (dbErr) {
+        console.error("Supabase insert threw:", dbErr)
+      }
+    } else {
+      console.error("Booking not saved to database: SUPABASE_URL or SUPABASE_SECRET_KEY is not configured.")
+    }
 
-    const { error } = await resend.emails.send({
-      from: "Gray Stone Transport <onboarding@resend.dev>",
-      to: notifyEmail,
-      subject: `New Ride Request - ${name}`,
-      html,
-    })
+    // Email the business (best-effort too, for the same reason).
+    let emailSent = false
+    const apiKey = process.env.RESEND_API_KEY
+    const notifyEmail = process.env.BOOKING_NOTIFY_EMAIL
+    if (apiKey && notifyEmail) {
+      const resend = new Resend(apiKey)
+      const html = renderBookingEmail(name, phone, rows)
+      const { error: emailError } = await resend.emails.send({
+        from: "Gray Stone Transport <onboarding@resend.dev>",
+        to: notifyEmail,
+        subject: `New Ride Request - ${name}`,
+        html,
+      })
+      if (emailError) {
+        console.error("Resend error:", emailError)
+      } else {
+        emailSent = true
+      }
+    } else {
+      console.error("Booking email not sent: RESEND_API_KEY or BOOKING_NOTIFY_EMAIL is not configured.")
+    }
 
-    if (error) {
-      console.error("Resend error:", error)
+    if (!savedToDatabase && !emailSent) {
       return NextResponse.json({ error: "Failed to send booking request. Please call us instead." }, { status: 502 })
     }
 
