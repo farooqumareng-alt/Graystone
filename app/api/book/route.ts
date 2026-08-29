@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js"
 
 export async function POST(request: Request) {
   try {
-    const { name, phone, pickup, dropoff, date, time, service, notes } = await request.json()
+    const { name, phone, email, pickup, dropoff, date, time, service, notes } = await request.json()
 
     if (!name || !phone || !pickup || !dropoff || !date || !time || !service) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 })
@@ -13,6 +13,7 @@ export async function POST(request: Request) {
     const rows = [
       ["Name", name],
       ["Phone", phone],
+      ["Email", email || "—"],
       ["Service Type", service],
       ["Pickup Address", pickup],
       ["Drop-off Address", dropoff],
@@ -32,6 +33,7 @@ export async function POST(request: Request) {
         const { error: dbError } = await supabase.from("bookings").insert({
           name,
           phone,
+          email: email || null,
           pickup,
           dropoff,
           preferred_date: date,
@@ -59,8 +61,9 @@ export async function POST(request: Request) {
       const resend = new Resend(apiKey)
       const html = renderBookingEmail(name, phone, rows)
       const { error: emailError } = await resend.emails.send({
-        from: "Gray Stone Transport <onboarding@resend.dev>",
+        from: "Gray Stone Transport <bookings@graystonet.com>",
         to: notifyEmail,
+        replyTo: email || undefined,
         subject: `New Ride Request - ${name}`,
         html,
       })

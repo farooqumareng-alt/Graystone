@@ -5,6 +5,7 @@ create table if not exists public.bookings (
   created_at timestamptz not null default now(),
   name text not null,
   phone text not null,
+  email text,
   pickup text not null,
   dropoff text not null,
   preferred_date date not null,
@@ -12,6 +13,10 @@ create table if not exists public.bookings (
   service text not null,
   notes text
 );
+
+-- Safe to re-run: adds the email column if this table already
+-- existed from before it was introduced.
+alter table public.bookings add column if not exists email text;
 
 -- RLS is enabled with NO policies attached, so this table is fully
 -- locked down for the anon/publishable key (no read, write, update,

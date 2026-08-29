@@ -12,11 +12,16 @@ export default function HomePage() {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
+    const formatAddress = (prefix: string) =>
+      [data.get(`${prefix}Street`), data.get(`${prefix}City`), [data.get(`${prefix}State`), data.get(`${prefix}Zip`)].filter(Boolean).join(" ")]
+        .filter(Boolean)
+        .join(", ")
     const payload = {
       name: data.get("name"),
       phone: data.get("phone"),
-      pickup: data.get("pickup"),
-      dropoff: data.get("dropoff"),
+      email: data.get("email"),
+      pickup: formatAddress("pickup"),
+      dropoff: formatAddress("dropoff"),
       date: data.get("date"),
       time: data.get("time"),
       service: data.get("service"),
@@ -278,12 +283,30 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">Email <span className="text-muted-foreground/70">(optional)</span></label>
+                    <input name="email" type="email" className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="you@example.com" />
+                  </div>
+                  <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">Pickup Address</label>
-                    <input name="pickup" type="text" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Street, City, ZIP" />
+                    <div className="space-y-3">
+                      <input name="pickupStreet" type="text" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Street Address" />
+                      <div className="grid grid-cols-6 gap-3">
+                        <input name="pickupCity" type="text" required className="col-span-3 px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="City" />
+                        <input name="pickupState" type="text" required defaultValue="TX" maxLength={2} className="col-span-1 px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground uppercase" placeholder="TX" />
+                        <input name="pickupZip" type="text" required inputMode="numeric" pattern="[0-9]{5}" className="col-span-2 px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="ZIP" />
+                      </div>
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">Drop-off Address</label>
-                    <input name="dropoff" type="text" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Street, City, ZIP" />
+                    <div className="space-y-3">
+                      <input name="dropoffStreet" type="text" required className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="Street Address" />
+                      <div className="grid grid-cols-6 gap-3">
+                        <input name="dropoffCity" type="text" required className="col-span-3 px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="City" />
+                        <input name="dropoffState" type="text" required defaultValue="TX" maxLength={2} className="col-span-1 px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground uppercase" placeholder="TX" />
+                        <input name="dropoffZip" type="text" required inputMode="numeric" pattern="[0-9]{5}" className="col-span-2 px-4 py-3 bg-secondary border border-border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-foreground placeholder:text-muted-foreground" placeholder="ZIP" />
+                      </div>
+                    </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
